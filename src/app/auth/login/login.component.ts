@@ -11,12 +11,15 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
-    loading: boolean;
+  loading: boolean;
+   isLogin = false;
   constructor(public snackbar :  MatSnackBar, private router: Router,  private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-     this.authenticationService.logout();
-        this.createForm();
+    this.authenticationService.logout();
+    this.createForm();
+
+
   }
 
   private createForm() {
@@ -46,7 +49,8 @@ export class LoginComponent implements OnInit {
                         localStorage.setItem('savedUserEmail', email);
                     } else {
                         localStorage.removeItem('savedUserEmail');
-                    }
+       }
+        this.isLogin = true;
         this.router.navigate(['/']);
      }
 

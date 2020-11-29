@@ -72,6 +72,7 @@ export class HomeComponent implements OnInit {
 
     })
     this.table.renderRows();
+    this.ngOnInit()
 
   }
 
@@ -86,10 +87,9 @@ export class HomeComponent implements OnInit {
           editedAt: new Date(),
         }
         this.todoService.update(row_obj.id, data).subscribe(res => {
-          console.log('Todo Updateed')
           this.snackbar.open('Todo has been Updated', 'Updated');
         })
-
+this.ngOnInit()
         return true
       }
 
@@ -102,8 +102,8 @@ export class HomeComponent implements OnInit {
     this.dataSource = this.dataSource.data.filter((value,key)=>{
       if (value.id == row_obj.id) {
         this.todoService.delete(row_obj.id).subscribe(res => {
-          console.log('Todo delete')
           this.snackbar.open('Todo has been Deleted', 'Deleted');
+          this.ngOnInit()
           return value.id != row_obj.id;
         })
       }

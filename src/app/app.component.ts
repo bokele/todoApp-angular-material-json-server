@@ -16,17 +16,25 @@ export class AppComponent {
   opened = true;
   isLogin = false;
 
-
-constructor(private httpClient: HttpClient , private router: Router, private authenticationService: AuthenticationService, ) { }
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav ;
+constructor(private httpClient: HttpClient , private router: Router, private authenticationService: AuthenticationService, ) { }
+
 
   ngOnInit() {
-    console.log(window.innerWidth)
      this.authenticationService.getAllUser().subscribe((data: User[])=>{
-        console.log(data);
         localStorage.setItem('users', JSON.stringify(data))
     })
-      this.getUser()
+     let user = this.authenticationService.getCurrentUser()
+
+    if (user && user.expiration) {
+      if (moment() < moment(user.expiration)) {
+        this.isLogin = true;
+      } else {
+        this.isLogin = false;
+      }
+    }
+    console.log(this.isLogin)
+    console.log(window.innerWidth)
       if (window.innerWidth < 768) {
       this.sidenav.fixedTopGap = 55;
       this.opened = false;
@@ -34,8 +42,6 @@ constructor(private httpClient: HttpClient , private router: Router, private aut
       this.sidenav.fixedTopGap = 55;
       this.opened = true;
     }
-
-
 
 
   }
@@ -66,14 +72,6 @@ constructor(private httpClient: HttpClient , private router: Router, private aut
   }
 
   getUser() {
-    let user = this.authenticationService.getCurrentUser()
 
-    if (user && user.expiration) {
-      if (moment() < moment(user.expiration)) {
-        this.isLogin = true;
-      } else {
-        this.isLogin = false;
-      }
-    }
   }
 }
