@@ -8,10 +8,10 @@ const routes: Routes = [
   {
     path: '', component: AppComponent,
     children: [
-      { path: '', loadChildren: './home/home.module#HomeModule' }
+      { path: '', loadChildren: './home/home.module#HomeModule' ,}
 
     ],
-    canActivate: [AuthGuardGuard]
+
   },
   {
     path: 'login', component: LoginComponent

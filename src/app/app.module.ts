@@ -9,10 +9,11 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material/material.module';
 import { HomeModule } from './home/home.module';
 import { ActionModule } from './action/action.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { AuthModule } from './auth/auth.module';
+
 
 
 
@@ -36,7 +37,7 @@ import { AuthModule } from './auth/auth.module';
 
   ],
   exports:[MaterialModule],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

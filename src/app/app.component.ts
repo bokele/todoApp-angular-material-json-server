@@ -1,5 +1,10 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
+import { AuthenticationService } from './services/authentication.service';
+import * as moment from 'moment'
+import { User } from './interface/user';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,21 +14,33 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class AppComponent {
   title = 'todoApp';
   opened = true;
+  isLogin = false;
 
+
+constructor(private httpClient: HttpClient , private router: Router, private authenticationService: AuthenticationService, ) { }
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav ;
 
   ngOnInit() {
     console.log(window.innerWidth)
-    if (window.innerWidth < 768) {
+     this.authenticationService.getAllUser().subscribe((data: User[])=>{
+        console.log(data);
+        localStorage.setItem('users', JSON.stringify(data))
+    })
+      this.getUser()
+      if (window.innerWidth < 768) {
       this.sidenav.fixedTopGap = 55;
       this.opened = false;
     } else {
       this.sidenav.fixedTopGap = 55;
       this.opened = true;
     }
+
+
+
+
   }
 
-    @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', ['$event'])
   onResize(event) {
     if (event.target.innerWidth < 768) {
       this.sidenav.fixedTopGap = 55;
@@ -39,6 +56,24 @@ export class AppComponent {
       return true;
     } else {
       return false;
+    }
+  }
+
+  logout() {
+     this.isLogin = false;
+    this.authenticationService.logout()
+     this.router.navigate(['login'])
+  }
+
+  getUser() {
+    let user = this.authenticationService.getCurrentUser()
+
+    if (user && user.expiration) {
+      if (moment() < moment(user.expiration)) {
+        this.isLogin = true;
+      } else {
+        this.isLogin = false;
+      }
     }
   }
 }
