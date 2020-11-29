@@ -1,0 +1,24 @@
+<!-- dialog-box.component.html -->
+<h1 mat-dialog-title class="mui--text-center">Action :: <strong>{{action}}</strong></h1>
+<div mat-dialog-content>
+  <!-- <ng-template *ngIf="action == 'Delete'; else elseTemplate"> -->
+    <div *ngIf="action != 'Delete'; else elseTemplate">
+    <mat-form-field class="example-full-width">
+      <input placeholder="{{action}} Name" matInput [(ngModel)]="local_data.name">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Textarea</mat-label>
+      <textarea matInput  [(ngModel)]="local_data.description"></textarea>
+    </mat-form-field>
+    </div>
+  <!-- </ng-template> -->
+
+  <ng-template #elseTemplate>
+    <h2 class="mat-h2 text-center">Sure to delete !!!!</h2>
+    <h4 class="mat-h4 text-center delete" color='warm'>Delete <b >{{local_data.name}}?</b></h4>
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="doAction()">{{action}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>
